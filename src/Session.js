@@ -86,10 +86,10 @@ class Session {
     }
 
     off(eventName, handler) {
-        if (!this.listeners[type] && !this.listeners[type][handler]) return
+        if (!this.listeners[eventName]) return
 
-        this.listeners[type].remove()
-        this.listeners[type] = null
+        this.listeners[eventName].remove()
+        this.listeners[eventName] = null
     }
 
     // Subscribers
