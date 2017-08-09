@@ -76,7 +76,7 @@ class Session {
     // // Events
 
     on(eventName, handler) {
-        if (!this.listeners[eventName]) this.listeners[eventName] = {}
+        if (this.listeners[eventName]) return
         this.listeners[eventName] = EventEmitter.addListener(
             eventName,
             event => handler(event)
