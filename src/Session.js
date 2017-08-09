@@ -77,7 +77,7 @@ class Session {
 
     on(eventName, handler) {
         if (!this.listeners[eventName]) this.listeners[eventName] = {}
-        this.listeners[eventName][handler] = EventEmitter.addListener(
+        this.listeners[eventName] = EventEmitter.addListener(
             eventName,
             event => handler(event)
         )
@@ -85,12 +85,12 @@ class Session {
         if (!this.listening) this._bindSignals()
     }
 
-    // off(eventName, handler) {
-    //     if (!this.listeners[type] && !this.listeners[type][handler]) return
+    off(eventName, handler) {
+        if (!this.listeners[type] && !this.listeners[type][handler]) return
 
-    //     this.listeners[type][handler].remove()
-    //     this.listeners[type][handler] = null
-    // }
+        this.listeners[type].remove()
+        this.listeners[type] = null
+    }
 
     // Subscribers
 
