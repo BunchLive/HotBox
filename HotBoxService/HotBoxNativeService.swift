@@ -36,7 +36,7 @@ class HotBoxNativeService: NSObject {
   let subscriberDidFailWithError = Variable<String?>(nil)
   let subscriberDidDisconnect = Variable<String?>(nil)
   
-  func disconnectAllSessions() -> Bool {
+  func disconnectAllSessions(response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     var error: OTError?
     var didSucceed = true
     
@@ -44,7 +44,7 @@ class HotBoxNativeService: NSObject {
       session?.disconnect(&error)
       
       if let error = error {
-        print(error.localizedDescription)
+        response = error
         didSucceed = false
       }
     }
@@ -52,7 +52,7 @@ class HotBoxNativeService: NSObject {
     return didSucceed
   }
   
-  func createNewSession(apiKey: String, sessionId: String, token: String) -> Bool {
+  func createNewSession(apiKey: String, sessionId: String, token: String, response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     _ = disconnectAllSessions()
     
     let session = OTSession(apiKey: apiKey, sessionId: sessionId, delegate: self)
@@ -61,7 +61,7 @@ class HotBoxNativeService: NSObject {
     session?.connect(withToken: token, error: &error)
     
     if let error = error {
-      print(error.localizedDescription)
+      response = error
       return false
     }
     
@@ -70,7 +70,7 @@ class HotBoxNativeService: NSObject {
     return true
   }
   
-  func createPublisher() -> Bool {
+  func createPublisher(response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     guard let activeSessionId = activeSessionId, let activeSession = sessions[activeSessionId] else { return false }
     
     let settings = OTPublisherSettings()
@@ -82,7 +82,7 @@ class HotBoxNativeService: NSObject {
     activeSession?.publish(publisher, error: &error)
     
     if let error = error {
-      print(error.localizedDescription)
+      response = error
       return false
     }
     
@@ -90,14 +90,14 @@ class HotBoxNativeService: NSObject {
     return true
   }
   
-  func createSubscriber(streamId: String) -> Bool {
+  func createSubscriber(streamId: String, response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     guard let activeSessionId = activeSessionId, let activeSession = sessions[activeSessionId], let stream = activeSession?.streams[streamId], let subscriber = OTSubscriber(stream: stream, delegate: self) else { return false }
     
     var error: OTError?
     activeSession?.subscribe(subscriber, error: &error)
     
     if let error = error {
-      print(error.localizedDescription)
+      response = error
       return false
     }
     
@@ -113,7 +113,7 @@ class HotBoxNativeService: NSObject {
     return subscribers[streamId]??.view
   }
   
-  func sendSignal(type: String?, string: String?, to connectionId: String?) -> Bool {
+  func sendSignal(type: String?, string: String?, to connectionId: String?, response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     guard let activeSessionId = activeSessionId, let activeSession = sessions[activeSessionId] else { return false }
     
     let connection: OTConnection?
@@ -128,7 +128,7 @@ class HotBoxNativeService: NSObject {
     activeSession?.signal(withType: type, string: string, connection: connection, error: &error)
     
     if let error = error {
-      print(error.localizedDescription)
+      response = error
       return false
     }
     
