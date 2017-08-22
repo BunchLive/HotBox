@@ -98,6 +98,12 @@ To show the Subscriber View. Make sure to pass in the streamId
 `<SubscriberView style={styles.viewStyle} streamId={streamId} />`
 
 
+## Credits
+
+Thanks to the following projects for inspiration!
+
+* https://github.com/callstack-io/react-native-opentok
+* https://github.com/tokboxnerds/opentok-react-native
 
 ## Issues?
 
