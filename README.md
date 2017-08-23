@@ -99,7 +99,7 @@ To show the Subscriber View. Make sure to pass in the streamId
 
 ## Example Houseparty Clone
 
-![Partyhouse](Example/partyhouse.gif)
+![Partyhouse](Example/partyhouse.gif =100x)
 
 To run:
 
