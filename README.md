@@ -127,7 +127,7 @@ session.on(event, handler)
 
 ## Example Houseparty Clone
 
-<img src="Example/partyhouse.gif" height="500">
+<img src="http://i.imgur.com/Le49y5W.gif" height="500">
 
 To run:
 
