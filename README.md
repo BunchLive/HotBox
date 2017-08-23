@@ -1,6 +1,8 @@
 # HotBox
 ![HOTBOX LOGO](http://i.imgur.com/495tedr.png)
 
+[![npm](https://img.shields.io/npm/dt/react-native-hot-box.svg)](https://www.npmjs.com/package/react-native-hot-box)
+
 HotBox is a React Native wrapper around [TokBox OpenTOK SDK](https://tokbox.com/).
 
 I tried the other React Native OpenTOK wrappers but they did not seem to work / provide the flexibility we wanted so we created our own. 

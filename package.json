@@ -4,14 +4,18 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "react-native start"
     },
+    "bugs": {
+      "url": "https://github.com/500LABS/HotBox/issues"
+    },
+    "homepage": "https://github.com/500LABS/HotBox#readme",    
     "keywords": [
       "react-native",
       "tokbox",
       "opentok",
       "houseparty"
    ],
-    "author": "",
-    "license": ""
+    "author": "Jordan Howlett <jordan@500labs.com>",
+    "license": "MIT"
   }
