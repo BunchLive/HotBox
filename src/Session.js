@@ -40,11 +40,11 @@ class Session {
     // // Publishers
 
     broadcastMessage(type, message) {
-        return this.sendMessage(type, message, null)
+        return HotBoxService.sendSignal(type, message, null)
     }
 
     sendMessage(type, message, connectionId) {
-        return HotBoxService.sendSigal(type, message, connectionId)
+        return HotBoxService.sendSignal(type, message, connectionId)
     }
 
     // // Events

@@ -84,6 +84,10 @@ export default class App extends Component {
     }))
   }
 
+  receivedSignal = ({type, connectionId, string}) => {
+    console.log('Received a message', type, connectionId, string)
+  }
+
   toggleVideo = () => {
     session.requestVideoStream(null, !this.state.publishingVideo)
     this.setState(previousState => ({
@@ -92,7 +96,8 @@ export default class App extends Component {
   }
 
   touchMiddle = () => {
-    session.modifySubscriberStream(true, null, {"width": 352, "height": 288}, 1)
+    session.broadcastMessage('StartGame', 'flappy-lives')
+    // session.modifySubscriberStream(true, null, {"width": 352, "height": 288}, 1)
   }
 
   toggleAudio = () => {
@@ -115,6 +120,7 @@ export default class App extends Component {
     session.on('subscriberDidConnect', this.subscriberConnected)
     session.on("subscriberDidDisconnect", this.subscriberDisconnected)
     session.on('sessionStreamDestroyed', this.streamDestroyed)
+    session.on('sessionReceivedSignal', this.receivedSignal)
 
     this.connect()
   }
