@@ -97,8 +97,26 @@ To show the Subscriber View. Make sure to pass in the streamId
 
 `<SubscriberView style={styles.viewStyle} streamId={streamId} />`
 
+## Example Houseparty Clone
+
+[Imgur](http://i.imgur.com/Le49y5W.gifv)
+
+To run:
+
+1. `yarn install`
+2. `cd Example/ios & pod install`
+3. `open Example/ios/Example.xcworkspace`
+4. Add your api key, token and session key in App.js
+5. `run`
+
 
 ## Credits
+
+Thanks to my team:
+
+* @george-lim
+* @jyliang
+
 
 Thanks to the following projects for inspiration!
 

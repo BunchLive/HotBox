@@ -43,7 +43,7 @@ const Footer = ({
           />
         </TouchableOpacity>
       </BarButton>
-      <BarButton>
+      {/* <BarButton>
         <TouchableOpacity
           style={styles.centerButton}
           onPress={touchMiddle}
@@ -54,7 +54,7 @@ const Footer = ({
             source={icons.MicImage}
           />
         </TouchableOpacity>
-      </BarButton>
+      </BarButton> */}
       <BarButton>
         <TouchableOpacity
           style={styles.rightButton}
