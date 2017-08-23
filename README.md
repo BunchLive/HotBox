@@ -8,7 +8,7 @@ I tried the other React Native OpenTOK wrappers but they did not seem to work / 
 
 ## Installation
 
-1. `yarn add --save react-native-hot-box` or inferiorly `npm install --save react-native-hot-box`
+1. `yarn add react-native-hot-box` or inferiorly `npm install --save react-native-hot-box`
 2. Add the files under `node_modules/react-native-hot-box/HotBoxService` (In Xcode: File -> Add files to "App Name")
 3. You're going to want a bridging header:
 
