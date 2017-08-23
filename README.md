@@ -99,7 +99,7 @@ To show the Subscriber View. Make sure to pass in the streamId
 
 ## Example Houseparty Clone
 
-[Imgur](http://i.imgur.com/Le49y5W.gifv)
+[Imgur](http://i.imgur.com/Le49y5W.gif)
 
 To run:
 
