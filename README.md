@@ -66,7 +66,26 @@ let token = ''
 session.createSession(apiKey, sessionId, token)
 ```
 
-You then have some methods on `Session`
+### Events
+
+```
+* sessionDidConnect 				(sessionId)
+* sessionDidDisconnect 				(sessionId)
+* sessionConnectionCreated 			(connectionId)
+* sessionConnectionDestroyed		(connectionId)
+* sessionStreamCreated 				(streamId)
+* sessionStreamDidFailWithError 	(err)
+* sessionStreamDestroyed 			(streamId)
+* sessionReceivedSignal 			(type, connectionId, message)
+* publisherStreamCreated 			(streamId)
+* publisherStreamDidFailWithError 	(err)
+* publisherStreamDestroyed 			(streamId)
+* subscriberDidConnect 				(streamId)
+* subscriberDidFailWithError 		(streamId)
+* subscriberDidDisconnect 			(streamId)
+```
+
+### Methods
 
 ```
 session.createSession(apiKey, sessionId, token)
@@ -94,11 +113,13 @@ session.on(event, handler)
 	
 ```
 
-To show the Publisher View:
+### Views
+
+#### Publisher
 
 `<PublisherView style={styles.viewStyle} />`
 
-To show the Subscriber View. Make sure to pass in the streamId
+### Subscriber
 
 `<SubscriberView style={styles.viewStyle} streamId={streamId} />`
 
