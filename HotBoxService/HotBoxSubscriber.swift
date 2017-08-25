@@ -27,7 +27,7 @@ class HotBoxSubscriber: UIView {
   func setStreamId(_ streamId: NSString) {
     guard let subscriber = HotBoxNativeService.shared.subscribers[streamId as String], let subscriberView = HotBoxNativeService.shared.requestSubscriberView(streamId: streamId as String) else { return }
     self.streamId = streamId
-    subscriber.audioLevelDelegate = self
+    subscriber?.audioLevelDelegate = self
     subscriberView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.subscriberView = subscriberView
     addSubview(subscriberView)
@@ -40,7 +40,7 @@ class HotBoxSubscriber: UIView {
 
   deinit {
     guard let streamId = self.streamId, let subscriber = HotBoxNativeService.shared.subscribers[streamId as String] else { return }
-    subscriber.audioLevelDelegate = nil
+    subscriber?.audioLevelDelegate = nil
   }
 }
 
@@ -50,6 +50,6 @@ extension HotBoxSubscriber: OTSubscriberKitAudioLevelDelegate {
 
     let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
     layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-    layer.borderWidth = talkBorderWidth
+    layer.borderWidth = borderWidth
   }
 }
