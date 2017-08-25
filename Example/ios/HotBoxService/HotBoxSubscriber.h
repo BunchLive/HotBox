@@ -9,5 +9,6 @@
 #import <React/RCTView.h>
 
 @interface HotBoxSubscriber : RCTView
-@property (nonatomic, assign) NSString *streamId;
+@property (nonatomic, strong) NSString *streamId;
+@property (nonatomic, assign) CGFloat borderWidth;
 @end

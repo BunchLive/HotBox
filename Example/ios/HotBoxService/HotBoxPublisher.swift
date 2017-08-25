@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import OpenTok
 
 @objc(HotBoxPublisher)
 class HotBoxPublisher: UIView {
   
   var publisherView: UIView?
+  var borderWidth: CGFloat = 2
+  var maxVolumeLevel: Float = 0.0001
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    guard let publisherView = HotBoxNativeService.shared.requestPublisherView() else { return }
+    guard let publisher = HotBoxNativeService.shared.publisher, let publisherView = HotBoxNativeService.shared.requestPublisherView() else { return }
+    publisher.audioLevelDelegate = self
     publisherView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.publisherView = publisherView
     addSubview(publisherView)
@@ -28,6 +32,28 @@ class HotBoxPublisher: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    self.publisherView?.frame = self.bounds
+    publisherView?.frame = bounds.insetBy(dx: borderWidth, dy: borderWidth)
+    publisherView?.layer.cornerRadius = max(1, layer.cornerRadius - borderWidth)
+    publisherView?.clipsToBounds = true
+  }
+
+  func setBorderWidth(_ borderWidth: CGFloat) {
+    self.borderWidth = borderWidth
+    layoutSubviews()
+  }
+
+  deinit {
+    guard let publisher = HotBoxNativeService.shared.publisher else { return }
+    publisher.audioLevelDelegate = nil
+  }
+}
+
+extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
+  func publisher(_ publisher: OTPublisherKit, audioLevelUpdated audioLevel: Float) {
+    maxVolumeLevel = max(audioLevel, maxVolumeLevel)
+    
+    let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
+    layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+    layer.borderWidth = talkBorderWidth
   }
 }
