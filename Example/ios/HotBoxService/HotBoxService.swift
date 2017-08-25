@@ -176,11 +176,11 @@ class HotBoxService: RCTEventEmitter {
     }
   }
 
-  @objc func modifySubscriberStream(all: Bool = false, forStreamId streamId: String? = nil, resolution: NSDictionary<NSString, NSNumber>? = nil, frameRate: NSNumber? = nil, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func modifySubscriberStream(_ all: Bool = false, forStreamId streamId: String? = nil, resolution: NSDictionary? = nil, frameRate: NSNumber? = nil, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var resolutionSize: CGSize? = nil
     
-    if let resolution = resolution, let width = resolution["width"] as CGFloat, let height = resolution["height"] as CGFloat {
-      resolutionSize = CGSize(width: width, height: height)
+    if let resolution = resolution, let width = (resolution["width"] as? NSNumber)?.doubleValue, let height = (resolution["height"] as? NSNumber)?.doubleValue {
+      resolutionSize = CGSize(width: CGFloat(width), height: CGFloat(height))
     }
     
     if HotBoxNativeService.shared.modifySubscriberStream(all: all, forStreamId: streamId, resolution: resolutionSize, frameRate: frameRate?.floatValue) {
@@ -190,7 +190,7 @@ class HotBoxService: RCTEventEmitter {
     }
   }
   
-  @objc func sendSignal(type: String?, string: String?, to connectionId: String?, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func sendSignal(_ type: String?, string: String?, to connectionId: String?, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     if HotBoxNativeService.shared.sendSignal(type: type, string: string, to: connectionId) {
       resolve(nil)
     } else {
