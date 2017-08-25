@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OpenTok
 
 @objc(HotBoxSubscriber)
 class HotBoxSubscriber: UIView {
