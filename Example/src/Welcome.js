@@ -46,7 +46,7 @@ export default class WelcomeScreen extends Component {
                     onPress={this.pressed}
                     activeOpacity={1.0}
                 >
-                    <Text style={styles.buttonTextStyle}>LEGO</Text>
+                    <Text style={styles.buttonTextStyle}>LEGGO</Text>
                 </TouchableOpacity>
             </View>
         )

@@ -96,8 +96,8 @@ export default class App extends Component {
   }
 
   touchMiddle = () => {
-    session.broadcastMessage('StartGame', 'flappy-lives')
-    // session.modifySubscriberStream(true, null, {"width": 352, "height": 288}, 1)
+    // session.broadcastMessage('StartGame', 'flappy-lives')
+    session.modifySubscriberStream(true, null, {"width": 352, "height": 288}, 1)
   }
 
   toggleAudio = () => {
@@ -111,6 +111,14 @@ export default class App extends Component {
     session.requestCameraSwap(true)
   }
 
+  subscriberVideoEnabled = (streamId) => {
+    console.log("Stream ", streamId, ' Enabled Video')
+  }
+
+  subscriberVideoDisabled = (streamId) => {
+    console.log("Stream ", streamId, ' Disabled Video')
+  }
+
   componentDidMount() {
 
     session.on('sessionDidConnect', () => this.didConnect())
@@ -121,6 +129,8 @@ export default class App extends Component {
     session.on("subscriberDidDisconnect", this.subscriberDisconnected)
     session.on('sessionStreamDestroyed', this.streamDestroyed)
     session.on('sessionReceivedSignal', this.receivedSignal)
+    session.on('subscriberVideoEnabled', this.subscriberVideoEnabled)
+    session.on('subscriberVideoDisabled', this.subscriberVideoDisabled)
 
     this.connect()
   }
