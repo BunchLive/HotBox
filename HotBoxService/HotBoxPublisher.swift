@@ -13,7 +13,7 @@ import OpenTok
 class HotBoxPublisher: UIView {
   
   var publisherView: UIView?
-  var borderWidth: CGFloat = 2
+  var publisherBorderWidth: CGFloat = 2
   var maxVolumeLevel: Float = 0.0001
   
   override init(frame: CGRect) {
@@ -32,13 +32,13 @@ class HotBoxPublisher: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    publisherView?.frame = bounds.insetBy(dx: borderWidth, dy: borderWidth)
-    publisherView?.layer.cornerRadius = max(1, layer.cornerRadius - borderWidth)
+    publisherView?.frame = bounds.insetBy(dx: publisherBorderWidth, dy: publisherBorderWidth)
+    publisherView?.layer.cornerRadius = max(1, layer.cornerRadius - publisherBorderWidth)
     publisherView?.clipsToBounds = true
   }
 
   func setBorderWidth(_ borderWidth: CGFloat) {
-    self.borderWidth = borderWidth
+    self.publisherBorderWidth = borderWidth
     layoutSubviews()
   }
 
@@ -54,6 +54,6 @@ extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
     
     let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
     layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-    layer.borderWidth = borderWidth
+    layer.borderWidth = publisherBorderWidth
   }
 }

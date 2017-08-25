@@ -54,5 +54,6 @@ extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
     
     let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
     layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+    layer.borderWidth = borderWidth
   }
 }
