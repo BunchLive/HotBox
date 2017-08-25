@@ -10,7 +10,17 @@ import Foundation
 import RxSwift
 
 enum Events: String {
-  case sessionDidConnect, sessionDidDisconnect, sessionConnectionCreated, sessionConnectionDestroyed, sessionStreamCreated, sessionStreamDidFailWithError, sessionStreamDestroyed, sessionReceivedSignal, publisherStreamCreated, publisherStreamDidFailWithError, publisherStreamDestroyed, subscriberDidConnect, subscriberDidFailWithError, subscriberDidDisconnect
+  case sessionDidConnect, sessionDidDisconnect, sessionConnectionCreated, sessionConnectionDestroyed, sessionStreamCreated, sessionStreamDidFailWithError, sessionStreamDestroyed, sessionReceivedSignal, publisherStreamCreated, publisherStreamDidFailWithError, publisherStreamDestroyed, subscriberDidConnect, subscriberDidFailWithError, subscriberDidDisconnect, subscriberVideoEnabled, subscriberVideoDisabled
+}
+
+func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
+  var i = 0
+  return AnyIterator {
+    let next = withUnsafeBytes(of: &i) { $0.load(as: T.self) }
+    if next.hashValue != i { return nil }
+    i += 1
+    return next
+  }
 }
 
 @objc(HotBoxService)
@@ -19,7 +29,10 @@ class HotBoxService: RCTEventEmitter {
   var disposeBag = DisposeBag()
   
   override func supportedEvents() -> [String]! {
-    return [Events.sessionDidConnect.rawValue, Events.sessionDidDisconnect.rawValue, Events.sessionConnectionCreated.rawValue, Events.sessionConnectionDestroyed.rawValue, Events.sessionStreamCreated.rawValue, Events.sessionStreamDidFailWithError.rawValue, Events.sessionStreamDestroyed.rawValue, Events.sessionReceivedSignal.rawValue, Events.publisherStreamCreated.rawValue, Events.publisherStreamDidFailWithError.rawValue, Events.publisherStreamDestroyed.rawValue, Events.subscriberDidConnect.rawValue, Events.subscriberDidFailWithError.rawValue, Events.subscriberDidDisconnect.rawValue]
+    return iterateEnum(Events.self).map({
+      (e) -> String in
+      return e.rawValue
+    })
   }
   
   @objc func bindSignals() {
@@ -116,6 +129,18 @@ class HotBoxService: RCTEventEmitter {
       [weak self]
       (signal) in
       self?.sendEvent(withName: Events.subscriberDidDisconnect.rawValue, body: signal)
+    }).addDisposableTo(disposeBag)
+
+    HotBoxNativeService.shared.subscriberVideoEnabled.asObservable().skip(1).subscribe(onNext: {
+      [weak self]
+      (signal) in
+      self?.sendEvent(withName: Events.subscriberVideoEnabled.rawValue, body: signal)
+    }).addDisposableTo(disposeBag)
+
+    HotBoxNativeService.shared.subscriberVideoDisabled.asObservable().skip(1).subscribe(onNext: {
+      [weak self]
+      (signal) in
+      self?.sendEvent(withName: Events.subscriberVideoDisabled.rawValue, body: signal)
     }).addDisposableTo(disposeBag)
   }
   

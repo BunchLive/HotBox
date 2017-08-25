@@ -35,6 +35,8 @@ class HotBoxNativeService: NSObject {
   let subscriberDidConnect = Variable<String?>(nil)
   let subscriberDidFailWithError = Variable<String?>(nil)
   let subscriberDidDisconnect = Variable<String?>(nil)
+  let subscriberVideoEnabled = Variable<String?>(nil)
+  let subscriberVideoDisabled = Variable<String?>(nil)
   
   func disconnectAllSessions(response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     var error: OTError?
@@ -271,5 +273,13 @@ extension HotBoxNativeService: OTSubscriberDelegate {
     guard let streamId = subscriber.stream?.streamId else { return }
     subscribers.removeValue(forKey: streamId)
     subscriberDidDisconnect.value = streamId
+  }
+
+  func subscriberVideoEnabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
+    subscriberVideoEnabled.value = subscriber.stream?.streamId
+  }
+
+  func subscriberVideoDisabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
+    subscriberVideoDisabled.value = subscriber.stream?.streamId
   }
 }
