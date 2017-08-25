@@ -46,10 +46,12 @@ class HotBoxSubscriber: UIView {
 
 extension HotBoxSubscriber: OTSubscriberKitAudioLevelDelegate {
   func subscriber(_ subscriber: OTSubscriberKit, audioLevelUpdated audioLevel: Float) {
-    maxVolumeLevel = max(audioLevel, maxVolumeLevel)
-
-    let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
-    layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-    layer.borderWidth = subscriberBorderWidth
+    if subscriber.stream?.hasAudio == true {
+      maxVolumeLevel = max(audioLevel, maxVolumeLevel)
+      
+      let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
+      layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+      layer.borderWidth = subscriberBorderWidth
+    }
   }
 }
