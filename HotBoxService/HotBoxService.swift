@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 enum Events: String {
-  case sessionDidConnect, sessionDidDisconnect, sessionConnectionCreated, sessionConnectionDestroyed, sessionStreamCreated, sessionStreamDidFailWithError, sessionStreamDestroyed, sessionReceivedSignal, publisherStreamCreated, publisherStreamDidFailWithError, publisherStreamDestroyed, subscriberDidConnect, subscriberDidFailWithError, subscriberDidDisconnect, audioLevelChanged
+  case sessionDidConnect, sessionDidDisconnect, sessionConnectionCreated, sessionConnectionDestroyed, sessionStreamCreated, sessionStreamDidFailWithError, sessionStreamDestroyed, sessionReceivedSignal, publisherStreamCreated, publisherStreamDidFailWithError, publisherStreamDestroyed, subscriberDidConnect, subscriberDidFailWithError, subscriberDidDisconnect, subscriberVideoEnabled, subscriberVideoDisabled
 }
 
 func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
@@ -24,23 +24,19 @@ func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
 }
 
 @objc(HotBoxService)
-class HotBoxService: RCTEventEmitter, HotBoxNativeServiceDelegate {
+class HotBoxService: RCTEventEmitter {
   
   var disposeBag = DisposeBag()
   
   override func supportedEvents() -> [String]! {
-    return iterateEnum(Events.self).map({ (e) -> String in
-        return e.rawValue
-      })
-  }
-  
-  func hotBoxSendEvent(name: String, body: Any) {
-    self.sendEvent(withName: name, body: body)
+    return iterateEnum(Events.self).map({
+      (e) -> String in
+      return e.rawValue
+    })
   }
   
   @objc func bindSignals() {
     disposeBag = DisposeBag()
-    HotBoxNativeService.shared.delegate = self
     
     HotBoxNativeService.shared.sessionDidConnect.asObservable().skip(1).subscribe(onNext: {
       [weak self]
@@ -133,6 +129,18 @@ class HotBoxService: RCTEventEmitter, HotBoxNativeServiceDelegate {
       [weak self]
       (signal) in
       self?.sendEvent(withName: Events.subscriberDidDisconnect.rawValue, body: signal)
+    }).addDisposableTo(disposeBag)
+
+    HotBoxNativeService.shared.subscriberVideoEnabled.asObservable().skip(1).subscribe(onNext: {
+      [weak self]
+      (signal) in
+      self?.sendEvent(withName: Events.subscriberVideoEnabled.rawValue, body: signal)
+    }).addDisposableTo(disposeBag)
+
+    HotBoxNativeService.shared.subscriberVideoDisabled.asObservable().skip(1).subscribe(onNext: {
+      [weak self]
+      (signal) in
+      self?.sendEvent(withName: Events.subscriberVideoDisabled.rawValue, body: signal)
     }).addDisposableTo(disposeBag)
   }
   

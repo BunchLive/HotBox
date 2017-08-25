@@ -9,4 +9,5 @@
 #import <React/RCTView.h>
 
 @interface HotBoxPublisher : RCTView
+@property (nonatomic, assign) CGFloat borderWidth;
 @end

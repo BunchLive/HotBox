@@ -5,6 +5,7 @@ import { requireNativeComponent, View } from 'react-native'
 class SubscriberView extends React.Component {
     static propTypes = {
         streamId: PropTypes.string.isRequired,
+        borderWidth: PropTypes.number,
         ...View.propTypes
     }
 

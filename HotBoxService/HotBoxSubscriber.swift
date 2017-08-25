@@ -13,38 +13,45 @@ import OpenTok
 class HotBoxSubscriber: UIView {
   
   var subscriberView: UIView?
-  var myStreamId: NSString?
+  var subscriberStreamId: NSString?
+  var subscriberBorderWidth: CGFloat = 2
+  var maxVolumeLevel: Float = 0.0001
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    let borderWidth = self.layer.borderWidth
-    self.subscriberView?.frame = self.bounds.insetBy(dx: borderWidth, dy: borderWidth)
+    subscriberView?.frame = bounds.insetBy(dx: subscriberBorderWidth, dy: subscriberBorderWidth)
+    subscriberView?.layer.cornerRadius = max(1, layer.cornerRadius - subscriberBorderWidth)
+    subscriberView?.clipsToBounds = true
   }
   
   func setStreamId(_ streamId: NSString) {
-    guard let subscriberView = HotBoxNativeService.shared.requestSubscriberView(streamId: streamId as String) else { return }
-    if let subscriber = HotBoxNativeService.shared.subscribers[streamId as String] {
-      subscriber?.audioLevelDelegate = self
-    }
-    self.myStreamId = streamId
+    guard let subscriber = HotBoxNativeService.shared.subscribers[streamId as String], let subscriberView = HotBoxNativeService.shared.requestSubscriberView(streamId: streamId as String) else { return }
+    self.subscriberStreamId = streamId
+    subscriber?.audioLevelDelegate = self
     subscriberView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.subscriberView = subscriberView
     addSubview(subscriberView)
   }
-  
+
+  func setBorderWidth(_ borderWidth: CGFloat) {
+    self.subscriberBorderWidth = borderWidth
+    layoutSubviews()
+  }
+
   deinit {
-    guard let streamId = self.myStreamId else { return }
-    if let subscriber = HotBoxNativeService.shared.subscribers[streamId as String] {
-      if subscriber?.audioLevelDelegate === self {
-        subscriber?.audioLevelDelegate = nil
-      }
-    }
+    guard let subscriberStreamId = self.subscriberStreamId, let subscriber = HotBoxNativeService.shared.subscribers[subscriberStreamId as String] else { return }
+    subscriber?.audioLevelDelegate = nil
   }
 }
 
-extension HotBoxSubscriber : OTSubscriberKitAudioLevelDelegate {
+extension HotBoxSubscriber: OTSubscriberKitAudioLevelDelegate {
   func subscriber(_ subscriber: OTSubscriberKit, audioLevelUpdated audioLevel: Float) {
-    let color = self.layer.borderColor ?? UIColor.white.cgColor
-    self.layer.borderColor = color.copy(alpha: CGFloat(audioLevel))
+    if subscriber.stream?.hasAudio == true {
+      maxVolumeLevel = max(audioLevel, maxVolumeLevel)
+      
+      let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
+      layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+      layer.borderWidth = subscriberBorderWidth
+    }
   }
 }
