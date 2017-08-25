@@ -50,10 +50,12 @@ class HotBoxPublisher: UIView {
 
 extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
   func publisher(_ publisher: OTPublisherKit, audioLevelUpdated audioLevel: Float) {
-    maxVolumeLevel = max(audioLevel, maxVolumeLevel)
-    
-    let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
-    layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-    layer.borderWidth = publisherBorderWidth
+    if publisher.stream?.hasAudio == true {
+      maxVolumeLevel = max(audioLevel, maxVolumeLevel)
+      
+      let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
+      layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+      layer.borderWidth = publisherBorderWidth
+    }
   }
 }
