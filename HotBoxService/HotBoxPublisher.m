@@ -11,5 +11,4 @@
 
 @interface RCT_EXTERN_MODULE(HotBoxPublisherSwift, RCTViewManager)
 RCT_EXPORT_VIEW_PROPERTY(borderWidth, CGFloat)
-RCT_EXPORT_VIEW_PROPERTY(useAlpha, BOOL)
 @end

@@ -14,9 +14,7 @@ class HotBoxPublisher: UIView {
   
   var publisherView: UIView?
   var publisherBorderWidth: CGFloat = 2
-  var publisherUseAlpha = false
   var maxVolumeLevel: Float = 0.0001
-  var timer: Timer?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -40,29 +38,17 @@ class HotBoxPublisher: UIView {
   }
 
   func setBorderWidth(_ borderWidth: CGFloat) {
-    publisherBorderWidth = borderWidth
+    self.publisherBorderWidth = borderWidth
     layoutSubviews()
-  }
-  
-  func setUseAlpha(_ useAlpha: Bool) {
-    publisherUseAlpha = useAlpha
   }
 
   deinit {
-    timer?.invalidate()
     guard let publisher = HotBoxNativeService.shared.publisher else { return }
     publisher.audioLevelDelegate = nil
   }
 }
 
 extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
-  
-  func setInactiveAlpha() {
-    UIView.animate(withDuration: 5, delay: 0, options: .allowUserInteraction, animations: {
-      self.alpha = 0.3
-    })
-  }
-  
   func publisher(_ publisher: OTPublisherKit, audioLevelUpdated audioLevel: Float) {
     if publisher.stream?.hasAudio == true {
       maxVolumeLevel = max(audioLevel, maxVolumeLevel)
@@ -70,15 +56,6 @@ extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
       let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
       layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
       layer.borderWidth = publisherBorderWidth
-      
-      if publisherUseAlpha && alpha > 0.5 {
-        UIView.animate(withDuration: 5, delay: 0, options: .allowUserInteraction, animations: {
-          self.alpha = 0.7
-        })
-        
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(setInactiveAlpha), userInfo: nil, repeats: false)
-      }
     }
   }
 }
