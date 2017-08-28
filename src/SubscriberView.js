@@ -6,6 +6,7 @@ class SubscriberView extends React.Component {
     static propTypes = {
         streamId: PropTypes.string.isRequired,
         borderWidth: PropTypes.number,
+        useAlpha: PropTypes.number,
         ...View.propTypes
     }
 

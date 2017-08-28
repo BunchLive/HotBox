@@ -11,5 +11,5 @@
 @interface HotBoxSubscriber : RCTView
 @property (nonatomic, strong) NSString *streamId;
 @property (nonatomic, assign) CGFloat borderWidth;
-//@property (nonatomic, assign) Boolean useAlpha;
+@property (nonatomic, assign) BOOL useAlpha;
 @end
