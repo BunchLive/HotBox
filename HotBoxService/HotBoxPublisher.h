@@ -10,4 +10,5 @@
 
 @interface HotBoxPublisher : RCTView
 @property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, assign) BOOL useAlpha;
 @end

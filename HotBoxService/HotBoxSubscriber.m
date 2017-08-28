@@ -12,4 +12,5 @@
 @interface RCT_EXTERN_MODULE(HotBoxSubscriberSwift, RCTViewManager)
 RCT_EXPORT_VIEW_PROPERTY(streamId, NSString)
 RCT_EXPORT_VIEW_PROPERTY(borderWidth, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(useAlpha, BOOL)
 @end
