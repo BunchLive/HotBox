@@ -10,12 +10,19 @@ import OpenTok
 import RxSwift
 
 class HotBoxNativeService: NSObject {
-  
+
+  class func defaultSetting() -> OTPublisherSettings {
+    let settings = OTPublisherSettings()
+    settings.name = UIDevice.current.name
+    return settings
+  }
+
   static let shared = HotBoxNativeService()
   
   var sessions: [String : OTSession?] = [:]
   var activeSessionId: String?
-  var publisher: OTPublisher?
+  var publisher : OTPublisher? = OTPublisher(delegate: nil,
+                                             settings: HotBoxNativeService.defaultSetting())
   var subscribers: [String : OTSubscriber?] = [:]
   var connections: [String : OTConnection?] = [:]
   
@@ -74,12 +81,8 @@ class HotBoxNativeService: NSObject {
   
   func createPublisher(response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     guard let activeSessionId = activeSessionId, let activeSession = sessions[activeSessionId] else { return false }
-    
-    let settings = OTPublisherSettings()
-    settings.name = UIDevice.current.name
-    
-    guard let publisher = OTPublisher(delegate: self, settings: settings) else { return false }
-    
+    guard let publisher = self.publisher else { return false}
+    publisher.delegate = self
     var error: OTError?
     activeSession?.publish(publisher, error: &error)
     
@@ -87,8 +90,6 @@ class HotBoxNativeService: NSObject {
       response?.pointee = error
       return false
     }
-    
-    self.publisher = publisher
     return true
   }
   
