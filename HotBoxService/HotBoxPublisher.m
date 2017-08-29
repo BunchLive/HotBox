@@ -12,4 +12,9 @@
 @interface RCT_EXTERN_MODULE(HotBoxPublisherSwift, RCTViewManager)
 RCT_EXPORT_VIEW_PROPERTY(borderWidth, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(useAlpha, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(alphaTimer, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(alphaTransition, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(talkingAlphaThreshold, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(maxAlpha, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(minAlpha, CGFloat)
 @end

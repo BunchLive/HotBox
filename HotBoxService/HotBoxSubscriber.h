@@ -12,4 +12,9 @@
 @property (nonatomic, strong) NSString *streamId;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, assign) BOOL useAlpha;
+@property (nonatomic, assign) CGFloat alphaTimer;
+@property (nonatomic, assign) CGFloat alphaTransition;
+@property (nonatomic, assign) CGFloat talkingAlphaThreshold;
+@property (nonatomic, assign) CGFloat maxAlpha;
+@property (nonatomic, assign) CGFloat minAlpha;
 @end

@@ -15,6 +15,11 @@ class HotBoxPublisher: UIView {
   var publisherView: UIView?
   var publisherBorderWidth: CGFloat = 2
   var publisherUseAlpha = false
+  var publisherAlphaTimer: CGFloat = 5
+  var publisherAlphaTransition: CGFloat = 0.5
+  var publisherTalkingAlphaThreshold: CGFloat = 0.5
+  var publisherMaxAlpha: CGFloat = 0.7
+  var publisherMinAlpha: CGFloat = 0.3
   var maxVolumeLevel: Float = 0.0001
   var timer: Timer?
   
@@ -47,6 +52,26 @@ class HotBoxPublisher: UIView {
   func setUseAlpha(_ useAlpha: Bool) {
     publisherUseAlpha = useAlpha
   }
+  
+  func setAlphaTimer(_ alphaTimer: CGFloat) {
+    publisherAlphaTimer = alphaTimer
+  }
+  
+  func setAlphaTransition(_ alphaTransition: CGFloat) {
+    publisherAlphaTransition = alphaTransition
+  }
+  
+  func setTalkingAlphaThreshold(_ talkingAlphaThreshold: CGFloat) {
+    publisherTalkingAlphaThreshold = talkingAlphaThreshold
+  }
+  
+  func setMaxAlpha(_ maxAlpha: CGFloat) {
+    publisherMaxAlpha = maxAlpha
+  }
+  
+  func setMinAlpha(_ minAlpha: CGFloat) {
+    publisherMinAlpha = minAlpha
+  }
 
   deinit {
     timer?.invalidate()
@@ -60,8 +85,8 @@ class HotBoxPublisher: UIView {
 extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
   
   func setInactiveAlpha() {
-    UIView.animate(withDuration: 5, delay: 0, options: .allowUserInteraction, animations: {
-      self.alpha = 0.3
+    UIView.animate(withDuration: TimeInterval(publisherAlphaTransition), delay: 0, options: .allowUserInteraction, animations: {
+      self.alpha = self.publisherMinAlpha
     })
   }
   
@@ -73,13 +98,13 @@ extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
       layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
       layer.borderWidth = publisherBorderWidth
       
-      if publisherUseAlpha && alpha > 0.5 {
-        UIView.animate(withDuration: 5, delay: 0, options: .allowUserInteraction, animations: {
-          self.alpha = 0.7
+      if publisherUseAlpha && alpha > publisherTalkingAlphaThreshold {
+        UIView.animate(withDuration: TimeInterval(publisherAlphaTransition), delay: 0, options: .allowUserInteraction, animations: {
+          self.alpha = self.publisherMaxAlpha
         })
         
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(setInactiveAlpha), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(publisherAlphaTimer), target: self, selector: #selector(setInactiveAlpha), userInfo: nil, repeats: false)
       }
     }
   }
