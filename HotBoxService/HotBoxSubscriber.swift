@@ -47,7 +47,9 @@ class HotBoxSubscriber: UIView {
   deinit {
     timer?.invalidate()
     guard let subscriberStreamId = self.subscriberStreamId, let subscriber = HotBoxNativeService.shared.subscribers[subscriberStreamId as String] else { return }
-    subscriber?.audioLevelDelegate = nil
+    if subscriber?.audioLevelDelegate === self {
+      subscriber?.audioLevelDelegate = nil
+    }
   }
 }
 

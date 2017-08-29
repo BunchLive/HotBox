@@ -51,7 +51,9 @@ class HotBoxPublisher: UIView {
   deinit {
     timer?.invalidate()
     guard let publisher = HotBoxNativeService.shared.publisher else { return }
-    publisher.audioLevelDelegate = nil
+    if publisher.audioLevelDelegate === self {
+      publisher.audioLevelDelegate = nil
+    }
   }
 }
 
