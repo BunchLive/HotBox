@@ -116,32 +116,32 @@ class HotBoxNativeService: NSObject {
     return subscribers[streamId]??.view
   }
   
-  func modifySubscriberStream(all: Bool = false, forStreamId streamId: String? = nil, resolution: CGSize? = nil, frameRate: Float? = nil) -> Bool {
-    if all {
-      for subscriber in subscribers {
+  func modifySubscriberStream(streamIds: [String], resolution: CGSize? = nil, frameRate: Float? = nil) -> Bool {
+    var streamList: [String] = []
+    
+    if streamIds.count == 0 {
+      for (_, item) in subscribers.enumerated() {
+        if let streamId = item.value?.stream?.streamId {
+          streamList.append(streamId)
+        }
+      }
+    } else {
+      streamList = streamIds
+    }
+    
+    for streamId in streamList {
+      if let subscriber = subscribers[streamId] {
         if let resolution = resolution {
-          subscriber.value?.preferredResolution = resolution
+          subscriber?.preferredResolution = resolution
         }
         
         if let frameRate = frameRate {
-          subscriber.value?.preferredFrameRate = frameRate
+          subscriber?.preferredFrameRate = frameRate
         }
       }
-      
-      return true
-    } else if let streamId = streamId, let subscriber = subscribers[streamId] {
-      if let resolution = resolution {
-        subscriber?.preferredResolution = resolution
-      }
-      
-      if let frameRate = frameRate {
-        subscriber?.preferredFrameRate = frameRate
-      }
-      
-      return true
     }
     
-    return false
+    return true
   }
   
   func sendSignal(type: String?, string: String?, to connectionId: String?, response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {

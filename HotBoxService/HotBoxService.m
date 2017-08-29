@@ -29,9 +29,8 @@ RCT_EXTERN_METHOD(createSubscriber:
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(modifySubscriberStream:
-                  (BOOL)all
-                  forStreamId: (nullable NSString*)streamId
-                  resolution: (nullable NSDictionary *)resolution
+                  (NSArray*)streamIds
+                  resolution: (nullable NSDictionary*)resolution
                   frameRate: (nonnull NSNumber*)frameRate
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject)

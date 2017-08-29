@@ -176,14 +176,14 @@ class HotBoxService: RCTEventEmitter {
     }
   }
 
-  @objc func modifySubscriberStream(_ all: Bool = false, forStreamId streamId: String? = nil, resolution: NSDictionary? = nil, frameRate: NSNumber? = nil, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func modifySubscriberStream(_ streamIds: NSArray, resolution: NSDictionary? = nil, frameRate: NSNumber? = nil, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var resolutionSize: CGSize? = nil
     
     if let resolution = resolution, let width = (resolution["width"] as? NSNumber)?.doubleValue, let height = (resolution["height"] as? NSNumber)?.doubleValue {
       resolutionSize = CGSize(width: CGFloat(width), height: CGFloat(height))
     }
     
-    if HotBoxNativeService.shared.modifySubscriberStream(all: all, forStreamId: streamId, resolution: resolutionSize, frameRate: frameRate?.floatValue) {
+    if HotBoxNativeService.shared.modifySubscriberStream(streamIds: streamIds as! [String], resolution: resolutionSize, frameRate: frameRate?.floatValue) {
       resolve(nil)
     } else {
       reject("1", "", nil)
