@@ -130,13 +130,13 @@ class HotBoxService: RCTEventEmitter {
       (signal) in
       self?.sendEvent(withName: Events.subscriberDidDisconnect.rawValue, body: signal)
     }).addDisposableTo(disposeBag)
-
+    
     HotBoxNativeService.shared.subscriberVideoEnabled.asObservable().skip(1).subscribe(onNext: {
       [weak self]
       (signal) in
       self?.sendEvent(withName: Events.subscriberVideoEnabled.rawValue, body: signal)
     }).addDisposableTo(disposeBag)
-
+    
     HotBoxNativeService.shared.subscriberVideoDisabled.asObservable().skip(1).subscribe(onNext: {
       [weak self]
       (signal) in
@@ -175,7 +175,7 @@ class HotBoxService: RCTEventEmitter {
       reject("1", "", nil)
     }
   }
-
+  
   @objc func modifySubscriberStream(_ streamIds: NSArray, resolution: NSDictionary? = nil, frameRate: NSNumber? = nil, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     var resolutionSize: CGSize? = nil
     

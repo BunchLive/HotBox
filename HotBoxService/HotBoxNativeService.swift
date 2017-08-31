@@ -30,7 +30,7 @@ class HotBoxNativeService: NSObject {
   let sessionDidDisconnect = Variable<String?>(nil)
   let sessionConnectionCreated = Variable<String?>(nil)
   let sessionConnectionDestroyed = Variable<String?>(nil)
-  let sessionStreamCreated = Variable<String?>(nil)
+  let sessionStreamCreated = Variable<[String : Any?]>([:])
   let sessionStreamDidFailWithError = Variable<String?>(nil)
   let sessionStreamDestroyed = Variable<String?>(nil)
   let sessionReceivedSignal = Variable<[String : String?]>([:])
@@ -226,7 +226,15 @@ extension HotBoxNativeService: OTSessionDelegate {
   func session(_ session: OTSession, streamCreated stream: OTStream) {
     guard session.sessionId == activeSessionId else { return }
     _ = createSubscriber(streamId: stream.streamId) // Handled by HotBox (default).
-    sessionStreamCreated.value = stream.streamId
+    sessionStreamCreated.value = [
+      "streamId" : stream.streamId,
+      "creationTime" : stream.creationTime,
+      "hasAudio" : stream.hasAudio,
+      "hasVideo" : stream.hasVideo,
+      "name" : stream.name,
+      "videoDimensions" : ["width" : stream.videoDimensions.width, "height" : stream.videoDimensions.height],
+      "videoType" : (stream.videoType == .camera ? "camera" : "screen")
+    ]
   }
   
   func session(_ session: OTSession, didFailWithError error: OTError) {
