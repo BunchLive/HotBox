@@ -228,7 +228,7 @@ extension HotBoxNativeService: OTSessionDelegate {
     _ = createSubscriber(streamId: stream.streamId) // Handled by HotBox (default).
     sessionStreamCreated.value = [
       "streamId" : stream.streamId,
-      "creationTime" : stream.creationTime,
+      "creationTime" : stream.creationTime.timeIntervalSince1970,
       "hasAudio" : stream.hasAudio,
       "hasVideo" : stream.hasVideo,
       "name" : stream.name,
