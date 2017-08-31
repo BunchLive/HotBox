@@ -216,7 +216,7 @@ extension HotBoxNativeService: OTSessionDelegate {
     connections[connection.connectionId] = connection
     sessionConnectionCreated.value = [
       "connectionId" : connection.connectionId,
-      "creationTime" : connection.creationTime,
+      "creationTime" : connection.creationTime.timeIntervalSince1970,
       "data" : connection.data
     ]
   }
