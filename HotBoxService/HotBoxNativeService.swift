@@ -11,9 +11,23 @@ import RxSwift
 
 class HotBoxNativeService: NSObject {
 
+  static let cameraResolutionKey = "camera-resolution.HotBoxNativeService"
+  
   class func defaultSetting() -> OTPublisherSettings {
     let settings = OTPublisherSettings()
     settings.name = UIDevice.current.name
+    
+    if let cameraResolutionString = UserDefaults.standard.string(forKey: HotBoxNativeService.cameraResolutionKey) {
+      switch cameraResolutionString {
+      case "high":
+        settings.cameraResolution = .high
+      case "low":
+        settings.cameraResolution = .low
+      default:
+        settings.cameraResolution = .medium
+      }
+    }
+    
     return settings
   }
 
