@@ -28,7 +28,7 @@ class HotBoxNativeService: NSObject {
   
   let sessionDidConnect = Variable<String?>(nil)
   let sessionDidDisconnect = Variable<String?>(nil)
-  let sessionConnectionCreated = Variable<String?>(nil)
+  let sessionConnectionCreated = Variable<[String : Any?]>([:])
   let sessionConnectionDestroyed = Variable<String?>(nil)
   let sessionStreamCreated = Variable<[String : Any?]>([:])
   let sessionStreamDidFailWithError = Variable<String?>(nil)
@@ -214,7 +214,11 @@ extension HotBoxNativeService: OTSessionDelegate {
   func session(_ session: OTSession, connectionCreated connection: OTConnection) {
     guard session.sessionId == activeSessionId else { return }
     connections[connection.connectionId] = connection
-    sessionConnectionCreated.value = connection.connectionId
+    sessionConnectionCreated.value = [
+      "connectionId" : connection.connectionId,
+      "creationTime" : connection.creationTime,
+      "data" : connection.data
+    ]
   }
   
   func session(_ session: OTSession, connectionDestroyed connection: OTConnection) {
