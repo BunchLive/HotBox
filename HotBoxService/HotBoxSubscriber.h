@@ -10,7 +10,7 @@
 
 @interface HotBoxSubscriber : RCTView
 @property (nonatomic, strong) NSString *streamId;
-@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, assign) CGFloat talkingBorderWidth;
 @property (nonatomic, assign) BOOL useAlpha;
 @property (nonatomic, assign) CGFloat alphaTimer;
 @property (nonatomic, assign) CGFloat alphaTransition;

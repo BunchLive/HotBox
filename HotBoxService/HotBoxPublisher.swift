@@ -13,7 +13,7 @@ import OpenTok
 class HotBoxPublisher: UIView {
   
   var publisherView: UIView?
-  var publisherBorderWidth: CGFloat = 2
+  var publisherBorderWidth: CGFloat = 0
   var publisherUseAlpha = false
   var publisherAlphaTimer: CGFloat = 5
   var publisherAlphaTransition: CGFloat = 0.5
@@ -95,8 +95,11 @@ extension HotBoxPublisher: OTPublisherKitAudioLevelDelegate {
       maxVolumeLevel = max(audioLevel, maxVolumeLevel)
       
       let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
-      layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-      layer.borderWidth = publisherBorderWidth
+
+      if publisherBorderWidth > 0 {
+        layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+        layer.borderWidth = publisherBorderWidth
+      }
       
       if publisherUseAlpha && alpha > publisherTalkingAlphaThreshold {
         UIView.animate(withDuration: TimeInterval(publisherAlphaTransition), delay: 0, options: .allowUserInteraction, animations: {
