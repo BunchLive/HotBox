@@ -10,7 +10,7 @@
 #import <React/RCTViewManager.h>
 
 @interface RCT_EXTERN_MODULE(HotBoxPublisherSwift, RCTViewManager)
-RCT_EXPORT_VIEW_PROPERTY(borderWidth, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(talkingBorderWidth, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(useAlpha, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(alphaTimer, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(alphaTransition, CGFloat)

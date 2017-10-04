@@ -9,7 +9,7 @@
 #import <React/RCTView.h>
 
 @interface HotBoxPublisher : RCTView
-@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, assign) CGFloat talkingBorderWidth;
 @property (nonatomic, assign) BOOL useAlpha;
 @property (nonatomic, assign) CGFloat alphaTimer;
 @property (nonatomic, assign) CGFloat alphaTransition;

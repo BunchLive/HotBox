@@ -4,7 +4,7 @@ import  { requireNativeComponent, View } from 'react-native';
 
 class PublisherView extends React.Component {
     static propTypes = {
-        borderWidth: PropTypes.number,
+        talkingBorderWidth: PropTypes.number,
         useAlpha: PropTypes.bool,
         alphaTimer: PropTypes.number,
         alphaTransition: PropTypes.number,
