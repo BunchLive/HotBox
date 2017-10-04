@@ -44,7 +44,7 @@ class HotBoxPublisher: UIView {
     publisherView?.clipsToBounds = true
   }
 
-  func setBorderWidth(_ borderWidth: CGFloat) {
+  func setTalkingBorderWidth(_ borderWidth: CGFloat) {
     publisherBorderWidth = borderWidth
     layoutSubviews()
   }

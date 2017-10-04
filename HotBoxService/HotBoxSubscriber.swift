@@ -40,7 +40,7 @@ class HotBoxSubscriber: UIView {
     addSubview(subscriberView)
   }
   
-  func setBorderWidth(_ borderWidth: CGFloat) {
+  func setTalkingBorderWidth(_ borderWidth: CGFloat) {
     subscriberBorderWidth = borderWidth
     layoutSubviews()
   }
