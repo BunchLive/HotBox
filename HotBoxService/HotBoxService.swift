@@ -144,7 +144,7 @@ class HotBoxService: RCTEventEmitter {
     }).addDisposableTo(disposeBag)
   }
   
-  @objc func disconnectAllSessions(resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func disconnectAllSessions(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     if HotBoxNativeService.shared.disconnectAllSessions() {
       resolve(nil)
     } else {
