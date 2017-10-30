@@ -14,7 +14,7 @@ class HotBoxSubscriber: UIView {
   
   var subscriberView: UIView?
   var subscriberStreamId: NSString?
-  var subscriberBorderWidth: CGFloat = 2
+  var subscriberBorderWidth: CGFloat = 0
   var subscriberUseAlpha = false
   var subscriberAlphaTimer: CGFloat = 5
   var subscriberAlphaTransition: CGFloat = 0.5
@@ -40,7 +40,7 @@ class HotBoxSubscriber: UIView {
     addSubview(subscriberView)
   }
   
-  func setBorderWidth(_ borderWidth: CGFloat) {
+  func setTalkingBorderWidth(_ borderWidth: CGFloat) {
     subscriberBorderWidth = borderWidth
     layoutSubviews()
   }
@@ -91,8 +91,11 @@ extension HotBoxSubscriber: OTSubscriberKitAudioLevelDelegate {
       maxVolumeLevel = max(audioLevel, maxVolumeLevel)
       
       let alpha = CGFloat(audioLevel / maxVolumeLevel * 10)
-      layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
-      layer.borderWidth = subscriberBorderWidth
+
+      if subscriberBorderWidth > 0 {
+        layer.borderColor = UIColor.white.withAlphaComponent(alpha).cgColor
+        layer.borderWidth = subscriberBorderWidth
+      }
       
       if subscriberUseAlpha && alpha > subscriberTalkingAlphaThreshold {
         UIView.animate(withDuration: TimeInterval(subscriberAlphaTransition), delay: 0, options: .allowUserInteraction, animations: {
