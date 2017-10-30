@@ -8,8 +8,9 @@
 
 import OpenTok
 import RxSwift
+import CallKit
 
-class HotBoxNativeService: NSObject {
+class HotBoxNativeService : NSObject {
 
   static let cameraResolutionKey = "camera-resolution.HotBoxNativeService"
   
@@ -58,6 +59,22 @@ class HotBoxNativeService: NSObject {
   let subscriberDidDisconnect = Variable<String?>(nil)
   let subscriberVideoEnabled = Variable<String?>(nil)
   let subscriberVideoDisabled = Variable<String?>(nil)
+
+  let callController = CXCallController()
+  
+  override init() {
+    super.init()
+    updatePublishAudioSetting()
+    callController.callObserver.setDelegate(self, queue: DispatchQueue.main)
+  }
+  
+  func updatePublishAudioSetting() {
+    if callController.callObserver.calls.count > 0 {
+      publisher?.publishAudio = false
+    } else {
+      publisher?.publishAudio = true
+    }
+  }
   
   func disconnectAllSessions(response: AutoreleasingUnsafeMutablePointer<OTError?>? = nil) -> Bool {
     var error: OTError?
@@ -308,5 +325,11 @@ extension HotBoxNativeService: OTSubscriberDelegate {
 
   func subscriberVideoDisabled(_ subscriber: OTSubscriberKit, reason: OTSubscriberVideoEventReason) {
     subscriberVideoDisabled.value = subscriber.stream?.streamId
+  }
+}
+
+extension HotBoxNativeService : CXCallObserverDelegate {
+  func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+    updatePublishAudioSetting()
   }
 }
