@@ -23,6 +23,7 @@ class HotBoxSubscriber: UIView {
   var subscriberMinAlpha: CGFloat = 0.3
   var maxVolumeLevel: Float = 0.0001
   var timer: Timer?
+  var subscriber : OTSubscriber? = nil
   
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -34,7 +35,9 @@ class HotBoxSubscriber: UIView {
   func setStreamId(_ streamId: NSString) {
     guard let subscriber = HotBoxNativeService.shared.subscribers[streamId as String], let subscriberView = HotBoxNativeService.shared.requestSubscriberView(streamId: streamId as String) else { return }
     subscriberStreamId = streamId
+    self.subscriber?.audioLevelDelegate = nil
     subscriber?.audioLevelDelegate = self
+    self.subscriber = subscriber
     subscriberView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.subscriberView = subscriberView
     addSubview(subscriberView)
@@ -71,6 +74,9 @@ class HotBoxSubscriber: UIView {
   
   deinit {
     timer?.invalidate()
+    if self.subscriber?.audioLevelDelegate === self {
+      self.subscriber?.audioLevelDelegate = nil
+    }
     guard let subscriberStreamId = self.subscriberStreamId, let subscriber = HotBoxNativeService.shared.subscribers[subscriberStreamId as String] else { return }
     if subscriber?.audioLevelDelegate === self {
       subscriber?.audioLevelDelegate = nil
