@@ -27,9 +27,16 @@ class HotBoxSubscriber: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    subscriberView?.frame = bounds.insetBy(dx: subscriberBorderWidth, dy: subscriberBorderWidth)
-    subscriberView?.layer.cornerRadius = max(1, layer.cornerRadius - subscriberBorderWidth)
-    subscriberView?.clipsToBounds = true
+    guard let subscriberView = subscriberView else { return }
+    let frame = bounds.insetBy(dx: subscriberBorderWidth, dy: subscriberBorderWidth)
+    if (frame.origin.x.isNaN ||
+      frame.origin.y.isNaN ||
+      frame.size.width.isNaN ||
+      frame.size.height.isNaN) {
+      return
+    }
+    subscriberView.frame = frame
+    subscriberView.layer.cornerRadius = max(1, layer.cornerRadius - subscriberBorderWidth)
   }
   
   func setStreamId(_ streamId: NSString) {
@@ -38,8 +45,8 @@ class HotBoxSubscriber: UIView {
     self.subscriber?.audioLevelDelegate = nil
     subscriber?.audioLevelDelegate = self
     self.subscriber = subscriber
-    subscriberView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.subscriberView = subscriberView
+    subscriberView.clipsToBounds = true
     addSubview(subscriberView)
   }
   

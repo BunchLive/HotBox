@@ -26,10 +26,12 @@ class HotBoxPublisher: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    guard let publisher = HotBoxNativeService.shared.publisher, let publisherView = HotBoxNativeService.shared.requestPublisherView() else { return }
+    guard
+      let publisher = HotBoxNativeService.shared.publisher,
+      let publisherView = HotBoxNativeService.shared.requestPublisherView() else { return }
     publisher.audioLevelDelegate = self
-    publisherView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     self.publisherView = publisherView
+    publisherView.clipsToBounds = true
     addSubview(publisherView)
   }
   
@@ -39,9 +41,16 @@ class HotBoxPublisher: UIView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    publisherView?.frame = bounds.insetBy(dx: publisherBorderWidth, dy: publisherBorderWidth)
-    publisherView?.layer.cornerRadius = max(1, layer.cornerRadius - publisherBorderWidth)
-    publisherView?.clipsToBounds = true
+    guard let publisherView = publisherView else { return }
+    let frame = bounds.insetBy(dx: publisherBorderWidth, dy: publisherBorderWidth)
+    if (frame.origin.x.isNaN ||
+      frame.origin.y.isNaN ||
+      frame.size.width.isNaN ||
+      frame.size.height.isNaN) {
+      return
+    }
+    publisherView.frame = frame
+    publisherView.layer.cornerRadius = max(1, layer.cornerRadius - publisherBorderWidth)
   }
 
   func setTalkingBorderWidth(_ borderWidth: CGFloat) {
