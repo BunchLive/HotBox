@@ -36,6 +36,12 @@ class HotBoxService: RCTEventEmitter {
   }
   
   @objc func bindSignals() {
+    if (!Thread.isMainThread) {
+      DispatchQueue.main.async {
+        self.bindSignals()
+      }
+      return
+    }
     disposeBag = DisposeBag()
     
     HotBoxNativeService.shared.sessionDidConnect.asObservable().skip(1).subscribe(onNext: {

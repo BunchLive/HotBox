@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     height: 86
   },
   leftButton: {
-    height: 19,
-    width: 32
+    height: 60,
+    width: 60
   },
   centerButton: {
     height: 24,
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2
   },
   rightButton: {
-    height: 24,
-    width: 24,
+    height: 60,
+    width: 60,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,

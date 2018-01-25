@@ -15,11 +15,11 @@ import {
   StatusBar
 } from 'react-native';
 
-import {Session, PublisherView, SubscriberView} from 'react-native-hot-box'
+import { Session, PublisherView, SubscriberView } from 'react-native-hot-box'
 
 import Footer from './Buttons'
 
-var {width, height} =  Dimensions.get('window')
+var { width, height } = Dimensions.get('window')
 
 var session = new Session()
 
@@ -32,9 +32,9 @@ export default class App extends Component {
   }
 
   connect = () => {
-    let apiKey = ''
-    let sessionId = ''
-    let token = ''
+    let apiKey = '45929062'
+    let sessionId = '2_MX40NTkyOTA2Mn5-MTUxNjkxMTM2ODUwNH5NYWw0Q2FpdlV1N1pydmJTQzZmeERLSnV-fg'
+    let token = 'T1==cGFydG5lcl9pZD00NTkyOTA2MiZzaWc9ZjA0MTI1YTQ2NTQ0NmRlNjRhNTYyOGZhNzcxOGRhYTViOGU5NzU0NTpzZXNzaW9uX2lkPTJfTVg0ME5Ua3lPVEEyTW41LU1UVXhOamt4TVRNMk9EVXdOSDVOWVd3MFEyRnBkbFYxTjFweWRtSlRRelptZUVSTFNuVi1mZyZjcmVhdGVfdGltZT0xNTE2OTExNDE3Jm5vbmNlPTAuNDQ5NzAwNTQ0NTY3MDg2OTcmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTUxNjkzMzAxNyZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ=='
 
     session.createSession(apiKey, sessionId, token)
   }
@@ -58,18 +58,22 @@ export default class App extends Component {
     if (this.state.subscriberIds.length === 0) return null
 
     return this.state.subscriberIds.map((streamId) => {
-      return <SubscriberView style={styles.viewStyle} streamId={streamId} />
+      return <SubscriberView key={streamId} style={styles.viewStyle} streamId={streamId} />
     })
   }
 
   subscriberConnected = (streamId) => {
     this.setState(previousState => ({
-        subscriberIds: [...previousState.subscriberIds, streamId]
+      subscriberIds: [...previousState.subscriberIds, streamId]
     }));
   }
 
   subscriberDisconnected = (streamId) => {
     var filtered = this.state.subscriberIds.filter((streamId) => streamId !== streamId)
+    
+    console.warn("why")
+    console.log('Subscriber Disconnected2222', streamId)
+    console.log(new Error().stack);
 
     this.setState(previousState => ({
       subscriberIds: filtered
@@ -84,7 +88,7 @@ export default class App extends Component {
     }))
   }
 
-  receivedSignal = ({type, connectionId, string}) => {
+  receivedSignal = ({ type, connectionId, string }) => {
     console.log('Received a message', type, connectionId, string)
   }
 
@@ -97,7 +101,7 @@ export default class App extends Component {
 
   touchMiddle = () => {
     // session.broadcastMessage('StartGame', 'flappy-lives')
-    session.modifySubscriberStream(true, null, {"width": 352, "height": 288}, 1)
+    session.modifySubscriberStream(true, null, { "width": 352, "height": 288 }, 1)
   }
 
   toggleAudio = () => {
@@ -125,8 +129,15 @@ export default class App extends Component {
     session.on("sessionDidDisconnect", () => this.didDisconnect())
     session.on('publisherStreamCreated', () => console.log("PUBLISHER CREATED"))
     session.on('sessionStreamCreated', () => console.log('sessionStreamCreated'))
-    session.on('subscriberDidConnect', this.subscriberConnected)
+
+    // session.on('subscriberDidDisconnect', (streamId) => {
+    //   console.warn("why")
+    //   console.log('Subscriber Disconnected2222', streamId)
+    // })
     session.on("subscriberDidDisconnect", this.subscriberDisconnected)
+
+    session.on('subscriberDidConnect', this.subscriberConnected)
+    
     session.on('sessionStreamDestroyed', this.streamDestroyed)
     session.on('sessionReceivedSignal', this.receivedSignal)
     session.on('subscriberVideoEnabled', this.subscriberVideoEnabled)
@@ -136,15 +147,15 @@ export default class App extends Component {
   }
 
   render() {
-    console.disableYellowBox = true;    
+    console.disableYellowBox = true;
 
     let hasSub = this.state.subscriberIds.length >= 1
     let viewCount =
       (hasSub ? this.state.subscriberIds.length : 0) +
       (this.state.publishing ? 1 : 0)
     let showTwoStyle = viewCount === 2 ? styles.two : {};
-    
-    
+
+
     return (
       <View style={styles.fullscreen}>
         <StatusBar hidden={true} />
@@ -157,12 +168,12 @@ export default class App extends Component {
 
         <View style={styles.fullscreen}>
           <Footer
-            publishingVideoTouch={this.toggleVideo} 
+            publishingVideoTouch={this.toggleVideo}
             publishingAudioTouch={this.toggleAudio}
 
             touchMiddle={this.touchMiddle}
 
-            publishingAudio={this.state.publishingAudio} 
+            publishingAudio={this.state.publishingAudio}
             publishingVideo={this.state.publishingVideo}
           />
         </View>

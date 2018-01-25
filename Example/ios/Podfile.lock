@@ -1,14 +1,14 @@
 PODS:
-  - OpenTok (2.11.3)
-  - RxSwift (3.6.1)
+  - OpenTok (2.13.0)
+  - RxSwift (4.1.1)
 
 DEPENDENCIES:
   - OpenTok
   - RxSwift
 
 SPEC CHECKSUMS:
-  OpenTok: 0c56e8c0fd58a946aaefd548b5f4d6ed47241ea1
-  RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
+  OpenTok: 9fa8d108284d751f284bf294a91c20529bde7df6
+  RxSwift: c6e3b1c7b325c7d121cd4327e9d98b7ed746b570
 
 PODFILE CHECKSUM: c15db3817096d964acbcb2383caada13259222c2
 
