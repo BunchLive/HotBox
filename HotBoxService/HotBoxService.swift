@@ -160,7 +160,7 @@ class HotBoxService: RCTEventEmitter {
     }
   }
   
-  @objc func createPublisher(resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func createPublisher(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     if HotBoxNativeService.shared.createPublisher() {
       resolve(nil)
     } else {
@@ -168,7 +168,7 @@ class HotBoxService: RCTEventEmitter {
     }
   }
   
-  @objc func createSubscriber(streamId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+  @objc func createSubscriber(_ streamId: String, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
     if HotBoxNativeService.shared.createSubscriber(streamId: streamId) {
       resolve(nil)
     } else {
