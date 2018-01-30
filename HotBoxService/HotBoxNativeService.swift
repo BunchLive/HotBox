@@ -54,7 +54,7 @@ class HotBoxNativeService : NSObject {
   let publisherStreamDidFailWithError = Variable<String?>(nil)
   let publisherStreamDestroyed = Variable<String?>(nil)
   
-  let subscriberDidConnect = Variable<String?>(nil)
+  let subscriberDidConnect = Variable<[String : Any?]>([:])
   let subscriberDidFailWithError = Variable<String?>(nil)
   let subscriberDidDisconnect = Variable<String?>(nil)
   let subscriberVideoEnabled = Variable<String?>(nil)
@@ -306,7 +306,10 @@ extension HotBoxNativeService: OTPublisherDelegate {
 extension HotBoxNativeService: OTSubscriberDelegate {
   
   func subscriberDidConnect(toStream subscriber: OTSubscriberKit) {
-    subscriberDidConnect.value = subscriber.stream?.streamId
+    subscriberDidConnect.value = [
+      "streamId" : subscriber.stream?.streamId,
+      "data" : subscriber.stream?.connection.data
+    ]
   }
   
   func subscriber(_ subscriber: OTSubscriberKit, didFailWithError error: OTError) {
